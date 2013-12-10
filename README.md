@@ -1,5 +1,1 @@
-# Express train template
-
-This is the default template that ships with express-train, the nodejs framework based on express 3. To find out more, visit:
-
-https://github.com/autoric/express-train
+This basic toto list app is my first attempt @ merging both express-train & AngularJS. So far so good; excellent way to organize your dev efforts! More to follow...
