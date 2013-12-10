@@ -1,0 +1,29 @@
+{
+    "name": "train-template-standard",
+    "version": "0.0.2",
+    "directories": {},
+    "engines": {
+        "node": ">=0.6.6",
+        "npm": ">=1.1"
+    },
+    "dependencies": {
+        "express": "3.2.x",
+        "express-train": "1.0.x",
+        "connect-timeout": "latest",
+        "connect-mongo": "latest",
+        "mongoose": "latest",
+        "async": "latest",
+        "passport": "latest",
+        "passport-local": "latest",
+        "winston": "latest",
+        "ejs": "latest"
+    },
+    "devDependencies": {
+        "mocha": "latest"
+    },
+    "main": "./app/index.js",
+    "scripts": {
+        "start": "./app/index.js",
+        "test": "mocha test"
+    }
+}

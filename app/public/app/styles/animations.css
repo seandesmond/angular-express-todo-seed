@@ -1,0 +1,37 @@
+/* slide animation for app views. */
+
+.slide-container {
+    position: relative;
+}
+
+.slide-animation.ng-enter, .slide-animation.ng-leave {
+    -webkit-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 600px;
+}
+
+.slide-animation.ng-enter {
+    z-index: 100;
+    left: 600px;
+    opacity: 0;
+}
+
+.slide-animation.ng-enter.ng-enter-active {
+    left: 0;
+    opacity: 1;
+}
+
+.slide-animation.ng-leave {
+    z-index: 101;
+    left: 0;
+    opacity: 1;
+}
+
+.slide-animation.ng-leave.ng-leave-active {
+    left: -600px;
+    opacity: 0;
+}

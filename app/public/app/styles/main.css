@@ -1,0 +1,56 @@
+body {
+    background: #fafafa;
+    padding-top: 70px;
+    color: #333;
+}
+
+/* ----- Input Icon ----- */
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon > input {
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
+.input-icon.input-icon-right > input {
+    padding-left: 6px;
+    padding-right: 24px;
+}
+
+.input-icon.input-icon-right > [class*="fa-"] {
+    left: auto;
+    right: 3px;
+}
+
+.input-icon > [class*="fa-"] {
+    padding: 0 3px;
+    z-index: 2;
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    left: 3px;
+    line-height: 29px;
+    display: inline-block;
+    color: rgb(144, 144, 144);
+    font-size: 16px;
+}
+
+[class*=" fa-"], [class^="fa-"] {
+    display: inline-block;
+    text-align: center;
+}
+
+.input-icon>input:focus+[class*=fa-] {
+    color: rgb(94, 175, 196);
+}
+
+.block {
+    display: block !important;
+}
+
+.inline {
+    display: inline !important;
+}
