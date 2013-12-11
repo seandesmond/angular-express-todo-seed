@@ -11,7 +11,7 @@ angular.module('publicApp')
             $scope.model.validationError = $scope.loginForm.$invalid;
             if (!$scope.model.validationError) {
                 $scope.model.posting = true;
-                $http.post('/user/login', {email: user.email, password: user.password})
+                $http.post('/user/login', user)
                     .success(function (data) {
                         auth.update(data);
 

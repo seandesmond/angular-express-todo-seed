@@ -5,7 +5,6 @@ module.exports = function (app, Todo) {
 
     controller.preSearch = [
         function (req, res, next) {
-            console.log('this it?');
             req.query = {userId: req.user.id};
             req.Model = Todo; // Don't think we need this
             return next();

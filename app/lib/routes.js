@@ -23,6 +23,7 @@ module.exports = function (app, middleware, apiController, homeController, userC
 
     //User
     app.get('/user', userController.getCurrent);
+    app.head('/user', userController.exists);
     app.post('/user/login', userController.authenticate);
     app.post('/user/register', userController.create);
     app.post('/user/logout', userController.kill);
@@ -38,7 +39,6 @@ module.exports = function (app, middleware, apiController, homeController, userC
     //Generic restful api for all models - if previous routes are not matched, will fall back to these
     //See below, which adds param middleware to load & set req.Model based on :model argument
     app.get('/api/:model', apiController.search);
-    app.head('/api/:model', apiController.search);
     app.post('/api/:model', apiController.create);
     app.get('/api/:model/:id', apiController.read);
     app.post('/api/:model/:id', apiController.update);

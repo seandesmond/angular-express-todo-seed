@@ -64,7 +64,12 @@
                     <div class="col-sm-12">
                         <div class="text-right">
                             <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
-                            <button type="submit" class="btn btn-primary" ng-click="register(model.user)">Register</button>
+                            <button type="submit" class="btn btn-primary" ng-click="register(model.user)">
+                                <span ng-if="!model.posting" class="fa fa-thumbs-up"></span>
+                                <span ng-if="model.posting" class="fa fa-cog fa-spin"></span>
+                                <span ng-show="!model.posting">Register!</span>
+                                <span ng-show="model.posting">Please wait...</span>
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 module.exports = function (app) {
     var UserSchema = new mongoose.Schema({
         username: { type: String, required: true, unique: true},
-        hashed_password: {type: String, required: true},
+        hashedPassword: {type: String, required: true},
         salt: {type: String, required: true}
     });
 
@@ -15,7 +15,7 @@ module.exports = function (app) {
             var user = this;
             user._password = password;
             user.salt = user.makeSalt();
-            user.hashed_password = user.encryptPassword(password);
+            user.hashedPassword = user.encryptPassword(password);
         })
         .get(function () {
             var user = this;
@@ -24,7 +24,7 @@ module.exports = function (app) {
 
     UserSchema.method('authenticate', function (plainText) {
         var user = this;
-        return user.encryptPassword(plainText) === user.hashed_password;
+        return user.encryptPassword(plainText) === user.hashedPassword;
     });
 
     UserSchema.method('makeSalt', function () {
@@ -42,7 +42,7 @@ module.exports = function (app) {
     });
 
     UserSchema.pre('save', function (next) {
-        var user = this, pw = user.password || user.hashed_password;
+        var user = this, pw = user.password || user.hashedPassword;
         user.token = user.generateToken();
 
         if (!pw) {

@@ -11,13 +11,9 @@ angular.module('publicApp')
             if (validationTimeout) { $timeout.cancel(validationTimeout); }
             validationTimeout = $timeout(function () {
                 if (username) {
-                    $http.get('/api/user?email=' + username).success(function (data) {
-                        if (data && data.length > 0) {
-                            $scope.model.usernameCollision = true;
-                        } else {
-                            $scope.model.usernameCollision = false;
-                        }
-                    }).error(function () {
+                    $http.head('/user?username=' + username).success(function () {
+                        $scope.model.usernameCollision = true;
+                    }).error(function (err, status) {
                         $scope.model.usernameCollision = false;
                     });
                 } else {
@@ -39,12 +35,12 @@ angular.module('publicApp')
                     })
                     .error(function (err, status) {
                         $scope.model.posting = false;
-                        $scope.model.submitError = err.message || unknownErr;
+                        $scope.model.submitError = err || unknownErr;
                     });
             }
         };
 
-        $scope.$watch('model.user.email', function (val) {
-            if (val) { checkUnique(val); }
+        $scope.$watch('model.user.username', function (val) {
+            checkUnique(val);
         });
     });

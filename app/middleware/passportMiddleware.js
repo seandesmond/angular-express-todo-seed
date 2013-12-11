@@ -2,7 +2,7 @@
 
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    BAD_LOGIN_STRING = 'Invalid username or password';
+    BAD_LOGIN_STRING = 'Invalid username or password.';
 
 module.exports = function (app, User) {
     var strategy = new LocalStrategy(
@@ -31,8 +31,6 @@ module.exports = function (app, User) {
         });
     });
 
-    passport.use(strategy);
-
     passport.setLocals = function (req, res, next) {
         if (req.isAuthenticated()) {
             res.locals.user = req.user;
@@ -40,6 +38,8 @@ module.exports = function (app, User) {
 
         return next();
     };
+
+    passport.use(strategy);
 
     return passport;
 };

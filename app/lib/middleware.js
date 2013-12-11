@@ -2,7 +2,6 @@
 
 var express = require('express'),
     path = require('path'),
-//    mongoose = require('mongoose'),
     connect_timeout = require('connect-timeout'),
     MongoStore = require('connect-mongo')(express);
 
