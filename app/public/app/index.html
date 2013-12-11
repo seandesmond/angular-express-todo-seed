@@ -1,12 +1,12 @@
 <!doctype html>
-<!--[if lt IE 7]><html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]><html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]><html lang="en" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--><html lang="en" class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]><html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="publicApp" ng-controller="MainCtrl"> <![endif]-->
+<!--[if IE 7]><html lang="en" class="no-js lt-ie9 lt-ie8" ng-app="publicApp" ng-controller="MainCtrl"> <![endif]-->
+<!--[if IE 8]><html lang="en" class="no-js lt-ie9" ng-app="publicApp" ng-controller="MainCtrl"> <![endif]-->
+<!--[if gt IE 8]><!--><html lang="en" class="no-js" ng-app="publicApp" ng-controller="MainCtrl"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>The Todo App | by Sean Desmond</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="styles/animations.css">
     <!-- endbuild -->
 </head>
-<body ng-app="publicApp">
+<body>
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
@@ -35,10 +35,13 @@
             <a class="navbar-brand" href="/">To-Do List</a>
         </div>
         <ul class="nav navbar-nav">
+            <li ng-if="model.currentUser()" ng-class="{'active': model.location.path() == '/todos'}"><a href="/todos">My Todos</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="/register">Register</a></li>
-            <li><a href="/login">Login</a></li>
+            <li ng-if="model.currentUser()" class="navbar-text">(<span ng-bind="model.currentUser().username"></span>)</li>
+            <li ng-if="!model.currentUser()"><a href="/register">Register</a></li>
+            <li ng-if="!model.currentUser()"><a href="/login">Login</a></li>
+            <li ng-if="model.currentUser()"><a href="" ng-click="logout()">Logout</a></li>
         </ul>
     </div>
 </nav>
@@ -75,7 +78,7 @@
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-ui-utils/modules/validate/validate.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <!-- endbuild -->
 

@@ -5,21 +5,21 @@ var passport = require('passport'),
     BAD_LOGIN_STRING = 'Invalid username or password.';
 
 module.exports = function (app, User) {
-    var strategy = new LocalStrategy(
-        {
-            usernameField: 'username',
-            passwordField: 'password'
-        },
-        function (username, password, done) {
-            User.findOne({username: username}, function (err, user) {
-                if (err) { return done(err); }
-                if (!user) { return done(null, false, { message: BAD_LOGIN_STRING }); }
-                if (user.authenticate(password)) { return done(null, user); }
+    var localStrategy = new LocalStrategy(
+            {
+                usernameField: 'username',
+                passwordField: 'password'
+            },
+            function (username, password, done) {
+                User.findOne({username: username}, function (err, user) {
+                    if (err) { return done(err); }
+                    if (!user) { return done(null, false, { message: BAD_LOGIN_STRING }); }
+                    if (user.authenticate(password)) { return done(null, user); }
 
-                return done(null, false, { message: BAD_LOGIN_STRING });
-            });
-        }
-    );
+                    return done(null, false, { message: BAD_LOGIN_STRING });
+                });
+            }
+        );
 
     passport.serializeUser(function (user, done) {
         return done(null, user.id);
@@ -39,7 +39,7 @@ module.exports = function (app, User) {
         return next();
     };
 
-    passport.use(strategy);
+    passport.use(localStrategy);
 
     return passport;
 };

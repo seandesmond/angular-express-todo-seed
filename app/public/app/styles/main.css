@@ -4,6 +4,14 @@ body {
     color: #333;
 }
 
+.click-able {
+    cursor: pointer;
+}
+
+.todo-completed {
+    text-decoration: line-through;
+}
+
 /* ----- Input Icon ----- */
 
 .input-icon {

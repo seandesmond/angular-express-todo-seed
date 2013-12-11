@@ -11,7 +11,7 @@ module.exports = function (app, User, passportMiddleware) {
                         if (err) {
                             next(err);
                         } else if (results) {
-                            res.send({username: results.username});
+                            res.send(results.getSafeJson());
                         } else {
                             res.send(400);
                         }
@@ -29,7 +29,7 @@ module.exports = function (app, User, passportMiddleware) {
 
                     return req.logIn(user, function (err) {
                         if (err) { return next(err); }
-                        return res.send('Ok', 200);
+                        return res.send(user.getSafeJson(), 200);
                     });
                 })(req, res, next);
             }],
@@ -48,7 +48,7 @@ module.exports = function (app, User, passportMiddleware) {
                                 next(err);
                             } else {
                                 req.logIn(user, function () {
-                                    res.send('Ok', 200);
+                                    res.send(user.getSafeJson(), 200);
                                 });
                             }
                         });

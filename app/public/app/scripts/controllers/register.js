@@ -22,7 +22,7 @@ angular.module('publicApp')
             }, 500);
         }
 
-        $scope.model = {usernameCollision: false};
+        $scope.model = {usernameCollision: false, posting: false};
 
         $scope.register = function (user) {
             $scope.model.validationError = $scope.registerForm.$invalid || $scope.model.usernameCollision;

@@ -4,7 +4,7 @@
         "key":"mykey",
         "secret": "mysecret"
     },
-    "request_timeout":1000,
+    "request_timeout":10000,
     "port":4000,
     "mongodb":{
         "uri":"mongodb://localhost:27017/express-train"

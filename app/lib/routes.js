@@ -2,7 +2,7 @@
 
 //var resource = require('express-resource');
 
-module.exports = function (app, middleware, apiController, homeController, userController, todoController, models) {
+module.exports = function (app, middleware, passportMiddleware, apiController, homeController, userController, todoController, models, User) {
 
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {
@@ -13,13 +13,32 @@ module.exports = function (app, middleware, apiController, homeController, userC
     /* Make sure this person is logged in. If they aren't, return a 401.
        This let's angular know to go to a login page. */
     function ensureAuthenticated(req, res, next) {
-        if (req.isAuthenticated()) { return next(); }
-        return res.send(401);
+        /* We'll need to try the api key authorization here if there is no session avail. This
+         * should really go into a custom passport strategy. For another day... */
+        if (!req.isAuthenticated()) {
+            var apiKey = req.headers.apiKey || req.headers.apikey || req.headers.ApiKey;
+            if (apiKey) {
+                User.findOne({apiKey: apiKey}, function (err, results) {
+                    if (err) {
+                        next(err);
+                    } else if (results) {
+                        req.user = {id: results.id};
+                        next();
+                    } else {
+                        res.send(401);
+                    }
+                });
+            } else {
+                res.send(401);
+            }
+        } else {
+            return next();
+        }
     }
 
     // Home
     //app.resource(app.controllers.home);
-    app.get(/(^\/(login|register)?)$/, homeController.index);
+    app.get(/(^\/(login|register|todos)?)$/, homeController.index);
 
     //User
     app.get('/user', userController.getCurrent);

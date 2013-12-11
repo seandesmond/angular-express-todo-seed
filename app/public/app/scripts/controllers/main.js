@@ -2,19 +2,13 @@
 
 'use strict';
 angular.module('publicApp')
-    .controller('MainCtrl', function ($scope, auth) {
-        $scope.model = { loggedIn: false };
+    .controller('MainCtrl', function ($scope, $http, $location, auth) {
+        $scope.model = { currentUser: auth.currentUser, location: $location };
 
         $scope.logout = function () {
             auth.clear();
+            $http.post('user/logout', {});
             $scope.$broadcast('event:loggedOut', null);
-        };
-
-        $scope.loggedIn = function () {
-            return auth.isAuthenticated();
-        };
-
-        $scope.getUserName = function () {
-            return auth.currentUser() ? (auth.currentUser().name || auth.currentUser().email) : '';
+            $location.path('/');
         };
     });

@@ -1,1 +1,66 @@
-<p>This is the todos view.</p>
+<div class="col-md-6 col-md-offset-3">
+    <div class="text-center">
+        <h1>My Todos</h1>
+    </div>
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <form name="todoForm" role="form" novalidate>
+                <div class="row">
+                    <div class="col-sm-5 col-xs-9">
+                        <label class="sr-only" for="todoText">Todo</label>
+                        <input type="text" class="form-control" ng-model="model.newTodo.text"
+                               id="todoText" placeholder="What do you have to do??" ng-required="true">
+                    </div>
+                    <div class="col-sm-5 col-xs-9">
+                        <div class="input-group" ng-class="{'open': model.calOpened}">
+                            <input type="text" class="form-control" datepicker-popup="MMMM d, y" ng-model="model.newTodo.dueDate"
+                                   is-open="model.calOpened" min="model.minDate" show-weeks="false" placeholder="Is there a due date?"
+                                   datepicker-options="model.dateOptions" name="rezDate" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" ng-class="{'dropdown-toggle': model.calOpened}" type="button" ng-click="openCal()">
+                                    <span class="fa fa-calendar"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-xs-3 text-right" style="padding-left: 0;">
+                        <button class="btn btn-success" ng-click="create(model.newTodo)" ng-disabled="todoForm.$invalid">
+                            <i class="fa fa-plus"></i>&nbsp;Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--<div class="panel-body">-->
+        <!--</div>-->
+
+        <!-- Table -->
+        <table class="table table-hover">
+            <thead>
+            <tr >
+                <th>Complete&nbsp;
+                    <span ng-click="sortBy('complete')" class="fa fa-sort text-muted click-able"
+                          ng-class="{'text-muted': model.sortedBy != 'complete'}"></span>
+                </th>
+                <th>What I gotta do&nbsp;
+                    <span ng-click="sortBy('text')" class="fa fa-sort text-muted click-able"
+                          ng-class="{'text-muted': model.sortedBy != 'text'}"></span>
+                </th>
+                <th>Deadline&nbsp;
+                    <span ng-click="sortBy('dueDate')" class="fa fa-sort text-muted click-able"
+                          ng-class="{'text-muted': model.sortedBy != 'dueDate'}"></span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="todo in model.todos" ng-class="{'todo-completed': todo.complete}">
+                <td class="span1"><input type="checkbox" ng-model="todo.complete" ng-click="setComplete(todo)"/></td>
+                <td ng-bind="todo.text"></td>
+                <td ng-bind="(todo.dueDate | date:'mediumDate') || 'Yay no due date :)'"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="panel-footer">Panel footer</div>
+    </div>
+</div>

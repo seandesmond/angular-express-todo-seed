@@ -49,6 +49,10 @@ module.exports = function () {
     controller.update = [
         function (req, res, next) {
             var id = req.params.id;
+
+            // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
+            delete req.body._id;
+
             //default update is a full replace
             //may want to give attribute replacement instead?
             req.Model.findByIdAndUpdate(id, req.body, function (err, doc) {

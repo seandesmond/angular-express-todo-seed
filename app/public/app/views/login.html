@@ -27,15 +27,22 @@
                         <span class="block input-icon input-icon-right">
                             <input class="form-control" ng-model="model.user.password" type="password" id="password"
                                    name="password" ng-maxlength="20" ng-minlength="6" placeholder="Password" required>
-                            <i class="fa fa-key"></i>
+                            <i class="fa fa-lock"></i>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
                         <div class="text-right">
-                            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
-                            <button type="submit" class="btn btn-primary" ng-click="login(model.user)">Sign in</button>
+                            <button type="button" class="btn btn-default" ng-click="cancel()"
+                                    ng-disabled="model.posting == true">Cancel</button>
+                            <button type="submit" class="btn btn-primary" ng-click="login(model.user)"
+                                    ng-disabled="model.posting == true">
+                                <span ng-show="model.posting == false" class="fa fa-key"></span>
+                                <span ng-show="model.posting == true" class="fa fa-cog fa-spin"></span>
+                                <span ng-show="model.posting == false">Sign In!</span>
+                                <span ng-show="model.posting == true">Please wait...</span>
+                            </button>
                         </div>
                     </div>
                 </div>

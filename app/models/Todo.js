@@ -5,7 +5,8 @@ var mongoose = require('mongoose');
 module.exports = function () {
     var TodoSchema = new mongoose.Schema({
         text: {type: String},
-        complete: {type: Boolean},
+        dueDate: {type: Date},
+        complete: {type: Boolean, 'default': false},
         userId: {type: mongoose.Schema.Types.ObjectId}
     });
 

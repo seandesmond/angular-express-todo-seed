@@ -1,49 +1,52 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    crypto = require('crypto');
+    crypto = require('crypto'),
+    uuid = require('node-uuid');
 
-module.exports = function (app) {
-    var UserSchema = new mongoose.Schema({
+module.exports = function () {
+    var userSchema = new mongoose.Schema({
         username: { type: String, required: true, unique: true},
         hashedPassword: {type: String, required: true},
-        salt: {type: String, required: true}
+        salt: {type: String, required: true},
+        apiKey: {type: String, index: true}
     });
 
-    UserSchema.virtual('password')
+    function encrypt(salt, plainText) {
+        return crypto.createHmac('sha1', salt).update(plainText).digest('hex');
+    }
+
+    userSchema.virtual('password')
         .set(function (password) {
             var user = this;
-            user._password = password;
-            user.salt = user.makeSalt();
-            user.hashedPassword = user.encryptPassword(password);
+            user.pw = password;
+            user.salt = crypto.randomBytes(64).toString('base64');
+            user.hashedPassword = encrypt(user.salt, password);
         })
         .get(function () {
             var user = this;
-            return user._password;
+            return user.pw;
         });
 
-    UserSchema.method('authenticate', function (plainText) {
-        var user = this;
-        return user.encryptPassword(plainText) === user.hashedPassword;
-    });
+    userSchema.methods.authenticate = function (plainText) {
+        return encrypt(this.salt, plainText) === this.hashedPassword;
+    };
 
-    UserSchema.method('makeSalt', function () {
-        return Math.round((new Date().valueOf() * Math.random())).toString();
-    });
+    userSchema.methods.getSafeJson = function () {
+        var user = this.toJSON();
 
-    UserSchema.method('encryptPassword', function (password) {
-        var user = this;
-        return crypto.createHmac('sha1', user.salt).update(password).digest('hex');
-    });
+        user.id = user._id;
+        delete user._id;
+        delete user.__v;
+        delete user.salt;
+        delete user.hashedPassword;
 
-    UserSchema.method('generateToken', function () {
-        var user = this;
-        return crypto.createHash('md5').update(user.username + (new Date().toString())).digest("hex");
-    });
+        return user;
+    };
 
-    UserSchema.pre('save', function (next) {
+    userSchema.pre('save', function (next) {
         var user = this, pw = user.password || user.hashedPassword;
-        user.token = user.generateToken();
+        user.apiKey = uuid.v4();
 
         if (!pw) {
             next(new Error('Invalid password'));
@@ -52,5 +55,5 @@ module.exports = function (app) {
         }
     });
 
-    return mongoose.model('User', UserSchema);
+    return mongoose.model('User', userSchema);
 };

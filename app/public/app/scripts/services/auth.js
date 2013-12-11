@@ -3,7 +3,7 @@
 'use strict';
 angular.module('publicApp')
     .service('auth', function Auth() {
-        var currentUser;
+        var currentUser, redirect = '/todos';
 
         function getCurrentUser() {
             if (!currentUser && Storage && sessionStorage.currentUser) {
@@ -14,7 +14,6 @@ angular.module('publicApp')
         }
 
         return {
-            isLoggedIn: function () { return !!getCurrentUser(); },
             update: function (info) {
                 currentUser = currentUser ? angular.extend(currentUser, info) : info;
                 sessionStorage.currentUser = JSON.stringify(currentUser);
@@ -24,6 +23,7 @@ angular.module('publicApp')
             },
             currentUser: function () {
                 return getCurrentUser();
-            }
+            },
+            redirect: redirect
         };
     });
