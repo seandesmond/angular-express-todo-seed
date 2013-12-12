@@ -9,8 +9,15 @@ angular.module('publicApp')
             sortedBy: 'text',
             sortReverse: false,
             numComplete: 0,
-            loadingTodos: true
+            loadingTodos: true,
+            commErrorTimeout: null
         };
+
+        function setCommError(err) {
+            $scope.model.commError = err;
+            if ($scope.model.commErrorTimeout) { $timeout.cancel($scope.model.commErrorTimeout); }
+            $scope.model.commErrorTimeout = $timeout(function () { $scope.model.commError = ''; }, 10000);
+        }
 
         todo.query(function (data) {
             $scope.model.todos = data;
@@ -27,14 +34,16 @@ angular.module('publicApp')
                     $scope.model.todos.push(data);
                     $scope.model.saveError = '';
                     $scope.model.newTodo = {};
-                }, function (data, status, headers, config) {
-                    $scope.model.saveError = data;
+                }, function (err) {
+                    setCommError(err);
                 });
             }
         };
 
         $scope.saveTodo = function (todo) {
-            if (todo) { todo.$save({id: todo._id}); }
+            if (todo) {
+                todo.$save({id: todo._id}, null, function (err) { setCommError(err); });
+            }
         };
 
         $scope.deleteTodo = function (todo, event) {
@@ -43,6 +52,8 @@ angular.module('publicApp')
                 todo.$delete({id: todo._id}, function () {
                     if (todo.complete) { $scope.model.numComplete--; }
                     $scope.model.todos.splice($scope.model.todos.indexOf(todo), 1);
+                }, function (err) {
+                    setCommError(err);
                 });
             }
         };

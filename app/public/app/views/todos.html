@@ -102,8 +102,10 @@
             <div ng-if="loadingTodos" class="panel-body text-center">
                 <span ng-show="model.posting == true" class="fa fa-cog fa-spin"></span> Loading your todos...
             </div>
-            <div class="panel-footer">Remaining Items:
+            <div class="panel-footer">
+                Remaining Items:&nbsp;
                 <strong><span ng-bind="model.todos.length - model.numComplete"></span></strong>
+                <span ng-bind="'Agh! ' + model.commError" class="text-danger pull-right" ng-show="model.commError"></span>
             </div>
         </div>
     </div>
