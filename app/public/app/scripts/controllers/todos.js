@@ -7,14 +7,21 @@ angular.module('publicApp')
             minDate: new Date(),
             todos: [],
             sortedBy: 'text',
-            sortReverse: false
+            sortReverse: false,
+            numComplete: 0,
+            loadingTodos: true
         };
 
         todo.query(function (data) {
             $scope.model.todos = data;
+            $scope.model.todos.forEach(function (todo) {
+                if (todo.complete) { $scope.model.numComplete++; }
+            });
+
+            $scope.model.loadingTodos = false;
         });
 
-        $scope.create = function (newTodo) {
+        $scope.createTodo = function (newTodo) {
             if (!$scope.todoForm.$invalid) {
                 todo.save({}, newTodo, function (data) {
                     $scope.model.todos.push(data);
@@ -26,27 +33,47 @@ angular.module('publicApp')
             }
         };
 
-        $scope.setComplete = function (todoToUpdate) {
+        $scope.saveTodo = function (todo) {
+            if (todo) { todo.$save({id: todo._id}); }
+        };
+
+        $scope.deleteTodo = function (todo, event) {
+            if (event) { event.stopPropagation(); }
+            if (todo) {
+                todo.$delete({id: todo._id}, function () {
+                    if (todo.complete) { $scope.model.numComplete--; }
+                    $scope.model.todos.splice($scope.model.todos.indexOf(todo), 1);
+                });
+            }
+        };
+
+        $scope.setComplete = function (todoToUpdate, event) {
+            if (event) { event.stopPropagation(); }
+
             /* We need to save on the next digest to let the 'complete' binding take place */
             $timeout(function () {
-                todoToUpdate.$save({id: todoToUpdate._id});
+                $scope.saveTodo(todoToUpdate);
+                $scope.model.numComplete = todoToUpdate.complete ?
+                        $scope.model.numComplete + 1 : $scope.model.numComplete - 1;
             });
         };
 
         $scope.removeComplete = function () {
             $scope.model.todos.forEach(function (todo) {
                 if (todo.complete) {
-                    todo.$delete({id: todo._id}, function () {
-                        $scope.model.todos.splice($scope.model.todos.indexOf(todo), 1);
-                    });
+                    $scope.deleteTodo(todo);
                 }
             });
+
+            $scope.model.numComplete = 0;
         };
 
         $scope.openCal = function () {
-            $timeout(function () {
-                $scope.model.calOpened = true;
-            });
+            $timeout(function () { $scope.model.calOpened = true; });
+        };
+
+        $scope.openEditCal = function () {
+            $timeout(function () { $scope.model.editCalOpened = true; });
         };
 
         $scope.sortBy = function (param) {
@@ -66,4 +93,21 @@ angular.module('publicApp')
 
             $scope.model.sortedBy = param;
         };
+
+        $scope.editItem = function (event, index) {
+            event.stopPropagation();
+            $scope.model.editIndex = index;
+        };
+
+        $scope.$on('event:enterPressed', function () {
+            $scope.saveTodo(($scope.model.editIndex !== -1) ?
+                    $scope.model.todos[$scope.model.editIndex] : null);
+            $scope.model.editIndex = -1;
+        });
+
+        $scope.$on('event:bodyClicked', function () {
+            $scope.saveTodo(($scope.model.editIndex !== -1) ?
+                    $scope.model.todos[$scope.model.editIndex] : null);
+            $scope.model.editIndex = -1;
+        });
     });

@@ -12,6 +12,18 @@ body {
     text-decoration: line-through;
 }
 
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.table > tbody > tr > td > input {
+    margin-left: -4px;
+}
+
+td {
+    height: 47px;
+}
+
 /* ----- Input Icon ----- */
 
 .input-icon {

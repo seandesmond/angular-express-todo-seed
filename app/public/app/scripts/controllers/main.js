@@ -11,4 +11,12 @@ angular.module('publicApp')
             $scope.$broadcast('event:loggedOut', null);
             $location.path('/');
         };
+
+        $scope.bodyClicked = function (event) {
+            $scope.$broadcast('event:bodyClicked', {});
+        };
+
+        $scope.enterPressed = function (event) {
+            $scope.$broadcast('event:enterPressed', {});
+        };
     });

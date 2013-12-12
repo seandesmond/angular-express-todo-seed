@@ -1,66 +1,110 @@
-<div class="col-md-6 col-md-offset-3">
-    <div class="text-center">
-        <h1>My Todos</h1>
-    </div>
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">
-            <form name="todoForm" role="form" novalidate>
-                <div class="row">
-                    <div class="col-sm-5 col-xs-9">
-                        <label class="sr-only" for="todoText">Todo</label>
-                        <input type="text" class="form-control" ng-model="model.newTodo.text"
-                               id="todoText" placeholder="What do you have to do??" ng-required="true">
-                    </div>
-                    <div class="col-sm-5 col-xs-9">
-                        <div class="input-group" ng-class="{'open': model.calOpened}">
-                            <input type="text" class="form-control" datepicker-popup="MMMM d, y" ng-model="model.newTodo.dueDate"
-                                   is-open="model.calOpened" min="model.minDate" show-weeks="false" placeholder="Is there a due date?"
-                                   datepicker-options="model.dateOptions" name="rezDate" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" ng-class="{'dropdown-toggle': model.calOpened}" type="button" ng-click="openCal()">
-                                    <span class="fa fa-calendar"></span>
-                                </button>
-                            </span>
+<div>
+    <div class="col-md-8 col-md-offset-2">
+        <div class="text-center">
+            <h1>My Todos</h1>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <form name="todoForm" role="form" novalidate>
+                    <div class="row">
+                        <div class="col-sm-5 col-xs-9">
+                            <label class="sr-only" for="todoText">Todo</label>
+                            <input type="text" class="form-control" ng-model="model.newTodo.text"
+                                   id="todoText" placeholder="What do you have to do??" ng-required="true">
+                        </div>
+                        <div class="col-sm-2 col-xs-1">
+                            <label class="sr-only" for="todoText">Priority</label>
+                            <input type="number" max="5" min="0" placeholder="Priority"
+                                   class="form-control" ng-model="model.newTodo.priority" ng-required="true">
+                        </div>
+
+                        <div class="col-sm-3 col-xs-9">
+                            <div class="input-group" ng-class="{'open': model.calOpened}">
+                                <input type="text" class="form-control" datepicker-popup="MMMM d, y" ng-model="model.newTodo.dueDate"
+                                       is-open="model.calOpened" min="model.minDate" show-weeks="false" placeholder="Is there a due date?"
+                                       datepicker-options="model.dateOptions" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" ng-class="{'dropdown-toggle': model.calOpened}" type="button" ng-click="openCal()">
+                                        <span class="fa fa-calendar"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-xs-3 text-right" style="padding-left: 0;">
+                            <button class="btn btn-success" ng-click="createTodo(model.newTodo)" ng-disabled="todoForm.$invalid">
+                                <i class="fa fa-plus"></i>&nbsp;Add</button>
                         </div>
                     </div>
-                    <div class="col-sm-2 col-xs-3 text-right" style="padding-left: 0;">
-                        <button class="btn btn-success" ng-click="create(model.newTodo)" ng-disabled="todoForm.$invalid">
-                            <i class="fa fa-plus"></i>&nbsp;Add</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
+
+            <!-- Table -->
+            <table class="table table-hover">
+                <thead>
+                <tr >
+                    <th>Done&nbsp;
+                        <span ng-click="sortBy('complete')" class="fa fa-sort text-muted click-able"
+                              ng-class="{'text-muted': model.sortedBy != 'complete'}"></span>
+                    </th>
+                    <th>What I gotta do&nbsp;
+                        <span ng-click="sortBy('text')" class="fa fa-sort text-muted click-able"
+                              ng-class="{'text-muted': model.sortedBy != 'text'}"></span>
+                    </th>
+                    <th>Priority&nbsp;
+                        <span ng-click="sortBy('priority')" class="fa fa-sort text-muted click-able"
+                              ng-class="{'text-muted': model.sortedBy != 'priority'}"></span>
+                    </th>
+                    <th>Deadline&nbsp;
+                        <span ng-click="sortBy('dueDate')" class="fa fa-sort text-muted click-able"
+                              ng-class="{'text-muted': model.sortedBy != 'dueDate'}"></span>
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="todo in model.todos" ng-class="{'todo-completed text-muted': todo.complete}"
+                    ng-click="editItem($event, $index)">
+                    <td><input style="margin-left: 4px;" type="checkbox" ng-model="todo.complete" ng-click="setComplete(todo, $event)"/></td>
+                    <td style="min-width: 178px;">
+                        <span ng-show="model.editIndex != $index" ng-bind="todo.text"></span>
+                        <input ng-show="model.editIndex == $index" type="text"
+                               class="form-control input-sm" ng-model="todo.text" ng-required="true">
+                    </td>
+                    <td style="min-width: 89px;">
+                        <span ng-show="model.editIndex != $index" ng-bind="todo.priority"></span>
+                        <input ng-show="model.editIndex == $index" type="number" max="5" min="0"
+                               class="form-control input-sm" ng-model="todo.priority" ng-required="true">
+                    </td>
+                    <td style="min-width: 172px;">
+                        <span ng-show="model.editIndex != $index" ng-bind="(todo.dueDate | date:'mediumDate') || 'Yay no due date :)'"></span>
+                        <div ng-show="model.editIndex == $index" class="input-group" ng-class="{'open': model.editCalOpened}"
+                                style="max-width: 130px;">
+                            <input type="text" class="form-control input-sm" datepicker-popup="mediumDate" ng-model="todo.dueDate"
+                                   is-open="model.editCalOpened" min="model.minDate" show-weeks="false" datepicker-options="model.dateOptions" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-sm" ng-class="{'dropdown-toggle': model.editCalOpened}" type="button" ng-click="openEditCal()">
+                                        <span class="fa fa-calendar"></span>
+                                    </button>
+                                </span>
+                        </div>
+                    </td>
+                    <td ng-click="deleteTodo(todo, $event)">
+                        <span class="fa fa-trash-o text-danger text-muted click-able"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div ng-if="!loadingTodos && (!model.todos || model.todos.length == 0)" class="panel-body text-center">
+                Doesn't appear you have anything "todo".
+            </div>
+            <div ng-if="loadingTodos" class="panel-body text-center">
+                <span ng-show="model.posting == true" class="fa fa-cog fa-spin"></span> Loading your todos...
+            </div>
+            <div class="panel-footer">Remaining Items:
+                <strong><span ng-bind="model.todos.length - model.numComplete"></span></strong>
+            </div>
         </div>
-
-        <!--<div class="panel-body">-->
-        <!--</div>-->
-
-        <!-- Table -->
-        <table class="table table-hover">
-            <thead>
-            <tr >
-                <th>Complete&nbsp;
-                    <span ng-click="sortBy('complete')" class="fa fa-sort text-muted click-able"
-                          ng-class="{'text-muted': model.sortedBy != 'complete'}"></span>
-                </th>
-                <th>What I gotta do&nbsp;
-                    <span ng-click="sortBy('text')" class="fa fa-sort text-muted click-able"
-                          ng-class="{'text-muted': model.sortedBy != 'text'}"></span>
-                </th>
-                <th>Deadline&nbsp;
-                    <span ng-click="sortBy('dueDate')" class="fa fa-sort text-muted click-able"
-                          ng-class="{'text-muted': model.sortedBy != 'dueDate'}"></span>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="todo in model.todos" ng-class="{'todo-completed': todo.complete}">
-                <td class="span1"><input type="checkbox" ng-model="todo.complete" ng-click="setComplete(todo)"/></td>
-                <td ng-bind="todo.text"></td>
-                <td ng-bind="(todo.dueDate | date:'mediumDate') || 'Yay no due date :)'"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="panel-footer">Panel footer</div>
     </div>
 </div>

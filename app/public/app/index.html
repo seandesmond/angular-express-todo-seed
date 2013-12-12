@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="styles/animations.css">
     <!-- endbuild -->
 </head>
-<body>
+<body ng-click="bodyClicked()" ui-keypress="{13:'enterPressed($event)'}">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
@@ -36,6 +36,7 @@
         </div>
         <ul class="nav navbar-nav">
             <li ng-if="model.currentUser()" ng-class="{'active': model.location.path() == '/todos'}"><a href="/todos">My Todos</a></li>
+            <li ng-if="model.currentUser()" ng-class="{'active': model.location.path() == '/account'}"><a href="/account">Account</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li ng-if="model.currentUser()" class="navbar-text">(<span ng-bind="model.currentUser().username"></span>)</li>
@@ -79,6 +80,7 @@
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-ui-utils/modules/validate/validate.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="bower_components/angular-ui-utils/modules/keypress/keypress.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <!-- endbuild -->
 
@@ -90,6 +92,7 @@
 <script src="scripts/services/auth.js"></script>
 <script src="scripts/services/todo.js"></script>
 <script src="scripts/controllers/todos.js"></script>
+<script src="scripts/controllers/account.js"></script>
 <!-- endbuild -->
 </body>
 </html>
