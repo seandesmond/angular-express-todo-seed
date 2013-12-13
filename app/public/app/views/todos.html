@@ -78,7 +78,7 @@
                                class="form-control input-sm" ng-model="todo.priority" ng-required="true">
                     </td>
                     <td style="min-width: 172px;">
-                        <span ng-show="model.editIndex != $index" ng-bind="(todo.dueDate | date:'mediumDate') || 'Yay no due date :)'"></span>
+                        <span ng-show="model.editIndex != $index" ng-bind="(todo.dueDate | date:'mediumDate') || 'no deadline'"></span>
                         <div ng-show="model.editIndex == $index" class="input-group" ng-class="{'open': model.editCalOpened}"
                                 style="max-width: 130px;">
                             <input type="text" class="form-control input-sm" datepicker-popup="mediumDate" ng-model="todo.dueDate"
@@ -97,10 +97,10 @@
                 </tbody>
             </table>
 
-            <div ng-if="!loadingTodos && (!model.todos || model.todos.length == 0)" class="panel-body text-center">
+            <div ng-if="!model.loadingTodos && (!model.todos || model.todos.length == 0)" class="panel-body text-center">
                 Doesn't appear you have anything "to do".
             </div>
-            <div ng-if="loadingTodos" class="panel-body text-center">
+            <div ng-if="model.loadingTodos" class="panel-body text-center">
                 <span ng-show="model.posting == true" class="fa fa-cog fa-spin"></span> Loading your to dos...
             </div>
             <div class="panel-footer">
