@@ -20,6 +20,15 @@ body {
     margin-left: -4px;
 }
 
+.navbar-brand {
+    padding-bottom: 0;
+}
+
+.navbar-brand img {
+    width: 65px;
+    margin-top: -10px;
+}
+
 td {
     height: 47px;
 }
