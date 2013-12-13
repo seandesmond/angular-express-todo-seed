@@ -1,7 +1,7 @@
 <div>
     <div class="col-md-8 col-md-offset-2">
         <div class="text-center">
-            <h1>My To-Do List</h1>
+            <h1>My To Do List</h1>
         </div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
@@ -9,7 +9,7 @@
                 <form name="todoForm" role="form" novalidate>
                     <div class="row">
                         <div class="col-sm-5 col-xs-9">
-                            <label class="sr-only" for="todoText">To-Do</label>
+                            <label class="sr-only" for="todoText">To Do</label>
                             <input type="text" class="form-control" ng-model="model.newTodo.text"
                                    id="todoText" placeholder="What needs to be done?" ng-required="true">
                         </div>
@@ -48,7 +48,7 @@
                         <span ng-click="sortBy('complete')" class="fa fa-sort text-muted click-able"
                               ng-class="{'text-muted': model.sortedBy != 'complete'}"></span>
                     </th>
-                    <th>To-Do&nbsp;
+                    <th>To Do&nbsp;
                         <span ng-click="sortBy('text')" class="fa fa-sort text-muted click-able"
                               ng-class="{'text-muted': model.sortedBy != 'text'}"></span>
                     </th>
@@ -98,10 +98,10 @@
             </table>
 
             <div ng-if="!loadingTodos && (!model.todos || model.todos.length == 0)" class="panel-body text-center">
-                Doesn't appear you have anything "to-do".
+                Doesn't appear you have anything "to do".
             </div>
             <div ng-if="loadingTodos" class="panel-body text-center">
-                <span ng-show="model.posting == true" class="fa fa-cog fa-spin"></span> Loading your to-dos...
+                <span ng-show="model.posting == true" class="fa fa-cog fa-spin"></span> Loading your to dos...
             </div>
             <div class="panel-footer">
                 Remaining Items:&nbsp;
