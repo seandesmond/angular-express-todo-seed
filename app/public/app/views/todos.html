@@ -21,8 +21,8 @@
 
                         <div class="col-sm-3 col-xs-9">
                             <div class="input-group" ng-class="{'open': model.calOpened}">
-                                <input type="text" class="form-control" datepicker-popup="MMMM d, y" ng-model="model.newTodo.dueDate"
-                                       is-open="model.calOpened" min="model.minDate" show-weeks="false" placeholder="Is there a due date?"
+                                <input type="text" class="form-control" datepicker-popup="mediumDate" ng-model="model.newTodo.dueDate"
+                                       is-open="model.calOpened" min="model.minDate" show-weeks="false" placeholder="Due date?"
                                        datepicker-options="model.dateOptions" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" ng-class="{'dropdown-toggle': model.calOpened}" type="button" ng-click="openCal()">
