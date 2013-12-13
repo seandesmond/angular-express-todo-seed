@@ -1,13 +1,13 @@
 {
-    "cookie_secret":"mysecret",
-    "session":{
-        "key":"mykey",
-        "secret": "mysecret"
+    "cookie_secret": "k4ZRnyZyZ3",
+    "session": {
+        "key": "lDs24y9j9v",
+        "secret": "lahAl57Z49"
     },
-    "request_timeout":10000,
-    "port":4000,
-    "mongodb":{
-        "uri":"mongodb://localhost:27017/express-train"
+    "request_timeout": 10000,
+    "port": 4000,
+    "mongodb": {
+        "uri": "mongodb://TodoListUser:rurACa2a@dharma.mongohq.com:10071/todo-list"
     },
-    "character_encoding":"utf-8"
+    "character_encoding": "utf-8"
 }
