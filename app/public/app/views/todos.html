@@ -1,7 +1,7 @@
 <div>
     <div class="col-md-8 col-md-offset-2">
         <div class="text-center">
-            <h1>My Todos</h1>
+            <h1>My Todo List</h1>
         </div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
@@ -11,7 +11,7 @@
                         <div class="col-sm-5 col-xs-9">
                             <label class="sr-only" for="todoText">Todo</label>
                             <input type="text" class="form-control" ng-model="model.newTodo.text"
-                                   id="todoText" placeholder="What do you have to do??" ng-required="true">
+                                   id="todoText" placeholder="What needs to be done?" ng-required="true">
                         </div>
                         <div class="col-sm-2 col-xs-1">
                             <label class="sr-only" for="todoText">Priority</label>
@@ -22,7 +22,7 @@
                         <div class="col-sm-3 col-xs-9">
                             <div class="input-group" ng-class="{'open': model.calOpened}">
                                 <input type="text" class="form-control" datepicker-popup="mediumDate" ng-model="model.newTodo.dueDate"
-                                       is-open="model.calOpened" min="model.minDate" show-weeks="false" placeholder="Due date?"
+                                       is-open="model.calOpened" min="model.minDate" show-weeks="false" placeholder="Due date"
                                        datepicker-options="model.dateOptions" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" ng-class="{'dropdown-toggle': model.calOpened}" type="button" ng-click="openCal()">
@@ -47,7 +47,7 @@
                         <span ng-click="sortBy('complete')" class="fa fa-sort text-muted click-able"
                               ng-class="{'text-muted': model.sortedBy != 'complete'}"></span>
                     </th>
-                    <th>What I gotta do&nbsp;
+                    <th>Todo&nbsp;
                         <span ng-click="sortBy('text')" class="fa fa-sort text-muted click-able"
                               ng-class="{'text-muted': model.sortedBy != 'text'}"></span>
                     </th>
