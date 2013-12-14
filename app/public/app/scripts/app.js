@@ -9,8 +9,8 @@ angular.module('publicApp', ['ui.bootstrap', 'ui.validate', 'ui.keypress', 'ngRo
             .when('/register', {templateUrl: 'views/register.html', controller: 'RegisterCtrl'})
             .when('/todos', {templateUrl: 'views/todos.html', controller: 'TodosCtrl'})
             .when('/account', {
-              templateUrl: 'views/account.html',
-              controller: 'AccountCtrl'
+                templateUrl: 'views/account.html',
+                controller: 'AccountCtrl'
             })
             .otherwise({redirectTo: '/'});
 

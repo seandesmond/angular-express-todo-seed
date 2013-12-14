@@ -14,7 +14,8 @@ angular.module('publicApp')
         };
 
         function setCommError(err) {
-            $scope.model.commError = err;
+            $scope.model.commError = (typeof err === 'string') ? err :
+                    (err.message || 'Could not communicate with server. Are you still online?');
             if ($scope.model.commErrorTimeout) { $timeout.cancel($scope.model.commErrorTimeout); }
             $scope.model.commErrorTimeout = $timeout(function () { $scope.model.commError = ''; }, 10000);
         }

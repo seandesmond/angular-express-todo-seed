@@ -104,9 +104,15 @@
                 <span ng-show="model.posting == true" class="fa fa-cog fa-spin"></span> Loading your to dos...
             </div>
             <div class="panel-footer">
-                Remaining Items:&nbsp;
-                <strong><span ng-bind="model.todos.length - model.numComplete"></span></strong>
-                <span ng-bind="'Agh! ' + model.commError" class="text-danger pull-right" ng-show="model.commError"></span>
+                <div class="row">
+                    <div class="col-xs-4">
+                        Remaining Items:&nbsp;
+                        <strong><span ng-bind="model.todos.length - model.numComplete"></span></strong>
+                    </div>
+                    <div class="col-xs-8 text-right" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                        <span ng-bind="'Agh! ' + model.commError" class="text-danger" ng-show="model.commError"></span>
+                    </div>
+                </div>
             </div>
         </div>
         <p class="text-center text-muted"><small>Click to edit a to do</small></p>
