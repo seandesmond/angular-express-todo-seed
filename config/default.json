@@ -9,5 +9,9 @@
     "mongodb": {
         "uri": "mongodb://localhost:27017/express-train"
     },
+    "facebook": {
+        "appId": "FB_APP_ID",
+        "appSecret": "FB_APP_SECRET"
+    },
     "character_encoding": "utf-8"
 }

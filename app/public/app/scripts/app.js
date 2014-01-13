@@ -17,7 +17,7 @@ angular.module('publicApp', ['ui.bootstrap', 'ui.validate', 'ui.keypress', 'ngRo
         $locationProvider.html5Mode(true).hashPrefix('!');
 
         /* Taken in part from: http://www.espeo.pl/2012/02/26/authentication-in-angularjs-application */
-        var interceptor = ['$q', '$location', 'auth', function ($q, $location, auth) {
+        var interceptor = ['$q', '$location', 'user', function ($q, $location, user) {
             function success(response) {
                 return response;
             }
@@ -25,7 +25,7 @@ angular.module('publicApp', ['ui.bootstrap', 'ui.validate', 'ui.keypress', 'ngRo
             function error(response) {
                 var status = response.status;
                 if (status === 401) {
-                    auth.redirect = $location.url();
+                    user.redirect = $location.url();
                     $location.path('/login');
                 }
 
@@ -39,10 +39,10 @@ angular.module('publicApp', ['ui.bootstrap', 'ui.validate', 'ui.keypress', 'ngRo
 
         $httpProvider.responseInterceptors.push(interceptor);
     })
-    .run(function ($rootScope, $http, auth) {
+    .run(function ($rootScope, $http, user) {
         $http.get('/user').success(function (data) {
-            auth.update(data);
-        }).error(function (err) {
-            auth.clear();
+            user.update(data);
+        }).error(function () {
+            user.clear();
         });
     });

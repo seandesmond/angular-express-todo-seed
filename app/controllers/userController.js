@@ -19,9 +19,9 @@ module.exports = function (app, User, passportMiddleware) {
                 }
             }],
 
-        authenticate: [
+        authenticateLocal: [
             function (req, res, next) {
-                passportMiddleware.authenticate('local', function (err, user, info) {
+                passportMiddleware.authenticate('local', function (err, user) {
                     if (err) { return next(err); }
                     if (!user) {
                         return res.send('Invalid username or password.', 400);
@@ -34,16 +34,37 @@ module.exports = function (app, User, passportMiddleware) {
                 })(req, res, next);
             }],
 
+        authenticateFacebook: [
+            function (req, res, next) {
+                passportMiddleware.authenticate('facebook')(req, res, next);
+            }],
+
+        authenticateFacebookCallback: [
+            function (req, res, next) {
+                passportMiddleware.authenticate('facebook', function (err, user) {
+                    if (err) { return next(err); }
+                    if (!user) { return res.redirect('/login'); }
+
+                    return req.logIn(user, function (err) {
+                        if (err) {
+                            next(err);
+                        } else {
+                            res.redirect('/todos');
+                        }
+                    });
+                })(req, res, next);
+            }],
+
         create: [
             function (req, res, next) {
                 var user = new User(req.body);
-                User.findOne({username: user.username}, function (err, results) {
+                User.findOne({'auth.username': user.auth.username}, function (err, results) {
                     if (err) {
                         next(err);
                     } else if (results) {
                         res.send('A user with this username already exists.', 400);
                     } else {
-                        user.save(function (err, results) {
+                        user.save(function (err) {
                             if (err) {
                                 next(err);
                             } else {
@@ -70,7 +91,7 @@ module.exports = function (app, User, passportMiddleware) {
         exists: [
             function (req, res, next) {
                 var username = req.query.username;
-                User.findOne({username: username}, function (err, results) {
+                User.findOne({'auth.username': username}, function (err, results) {
                     if (err) {
                         next(err);
                     } else if (results) {

@@ -2,6 +2,6 @@
 
 'use strict';
 angular.module('publicApp')
-    .controller('AccountCtrl', function ($scope, auth) {
-        $scope.model.user = auth.currentUser();
+    .controller('AccountCtrl', function ($scope, user) {
+        $scope.model.user = user.currentUser();
     });

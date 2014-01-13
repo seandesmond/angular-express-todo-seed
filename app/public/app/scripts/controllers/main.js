@@ -2,21 +2,21 @@
 
 'use strict';
 angular.module('publicApp')
-    .controller('MainCtrl', function ($scope, $http, $location, auth) {
-        $scope.model = { currentUser: auth.currentUser, location: $location };
+    .controller('MainCtrl', function ($scope, $http, $location, user) {
+        $scope.model = { currentUser: user.currentUser, location: $location };
 
         $scope.logout = function () {
-            auth.clear();
+            user.clear();
             $http.post('user/logout', {});
             $scope.$broadcast('event:loggedOut', null);
             $location.path('/');
         };
 
-        $scope.bodyClicked = function (event) {
+        $scope.bodyClicked = function () {
             $scope.$broadcast('event:bodyClicked', {});
         };
 
-        $scope.enterPressed = function (event) {
+        $scope.enterPressed = function () {
             $scope.$broadcast('event:enterPressed', {});
         };
     });

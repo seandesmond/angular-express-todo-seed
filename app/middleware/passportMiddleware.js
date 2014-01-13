@@ -2,21 +2,44 @@
 
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
+    FacebookStrategy = require('passport-facebook').Strategy,
     BAD_LOGIN_STRING = 'Invalid username or password.';
 
-module.exports = function (app, User) {
+module.exports = function (app, config, User) {
     var localStrategy = new LocalStrategy(
-            {
-                usernameField: 'username',
-                passwordField: 'password'
-            },
-            function (username, password, done) {
-                User.findOne({username: username}, function (err, user) {
-                    if (err) { return done(err); }
-                    if (!user) { return done(null, false, { message: BAD_LOGIN_STRING }); }
-                    if (user.authenticate(password)) { return done(null, user); }
+        {
+            usernameField: 'username',
+            passwordField: 'password'
+        },
+        function (username, password, done) {
+            User.findOne({'auth.username': username}, function (err, user) {
+                if (err) { return done(err); }
+                if (!user) { return done(null, false, { message: BAD_LOGIN_STRING }); }
+                if (user.authenticate(password)) { return done(null, user); }
 
-                    return done(null, false, { message: BAD_LOGIN_STRING });
+                return done(null, false, { message: BAD_LOGIN_STRING });
+            });
+        }
+    ),
+        facebookStrategy = new FacebookStrategy(
+            {
+                clientID: config.facebook.appId,
+                clientSecret: config.facebook.appSecret,
+                callbackURL: "http://localhost:" + config.port + "/user/facebook-callback"
+            },
+            function (accessToken, refreshToken, profile, done) {
+                User.findOne({'profile.id': profile.id, 'profile.provider': 'facebook'}, function (err, user) {
+                    if (err) {
+                        done(err);
+                    } else if (user) {
+                        done(null, user);
+                    } else {
+                        var newUser = new User({profile: profile});
+                        newUser.save(function (err) {
+                            if (err) { throw err; }
+                            done(null, newUser);
+                        });
+                    }
                 });
             }
         );
@@ -40,6 +63,7 @@ module.exports = function (app, User) {
     };
 
     passport.use(localStrategy);
+    passport.use(facebookStrategy);
 
     return passport;
 };

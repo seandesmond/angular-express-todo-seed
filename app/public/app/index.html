@@ -39,7 +39,7 @@
             <li ng-if="model.currentUser()" ng-class="{'active': model.location.path() == '/account'}"><a href="/account">Account</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li ng-if="model.currentUser()" class="navbar-text">(<span ng-bind="model.currentUser().username"></span>)</li>
+            <li ng-if="model.currentUser()" class="navbar-text">(<span ng-bind="model.currentUser().auth.username || model.currentUser().profile.displayName"></span>)</li>
             <li ng-if="!model.currentUser()"><a href="/register">Register</a></li>
             <li ng-if="!model.currentUser()"><a href="/login">Login</a></li>
             <li ng-if="model.currentUser()"><a href="" ng-click="logout()">Logout</a></li>
@@ -89,7 +89,7 @@
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/register.js"></script>
-<script src="scripts/services/auth.js"></script>
+<script src="scripts/services/user.js"></script>
 <script src="scripts/services/todo.js"></script>
 <script src="scripts/controllers/todos.js"></script>
 <script src="scripts/controllers/account.js"></script>

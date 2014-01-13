@@ -7,14 +7,14 @@
         <div class="panel-heading">
             <h3 class="panel-title">Account Username</h3>
         </div>
-        <div class="panel-body text-center" ng-bind="model.user.username">
+        <div class="panel-body text-center" ng-bind="model.user.auth.username || ('Logged in with ' + model.user.profile.provider)">
         </div>
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">REST API Key (keep this a secret)</h3>
         </div>
-        <div class="panel-body text-center" ng-bind="model.user.apiKey">
+        <div class="panel-body text-center" ng-bind="model.user.auth.apiKey">
         </div>
     </div>
 </div>

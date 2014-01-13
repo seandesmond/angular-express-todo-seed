@@ -2,7 +2,7 @@
 
 'use strict';
 angular.module('publicApp')
-    .service('auth', function Auth() {
+    .service('user', function User() {
         var currentUser, redirect = '/todos';
 
         function getCurrentUser() {

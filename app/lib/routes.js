@@ -11,7 +11,7 @@ module.exports = function (app, middleware, passportMiddleware, apiController, h
     }
 
     /* Make sure this person is logged in. If they aren't, return a 401.
-       This let's angular know to go to a login page. */
+     This let's angular know to go to a login page. */
     function ensureAuthenticated(req, res, next) {
         /* We'll need to try the api key authorization here if there is no session avail. This
          * should really go into a custom passport strategy. For another day... */
@@ -32,7 +32,7 @@ module.exports = function (app, middleware, passportMiddleware, apiController, h
                 res.send(401);
             }
         } else {
-            return next();
+            next();
         }
     }
 
@@ -43,13 +43,15 @@ module.exports = function (app, middleware, passportMiddleware, apiController, h
     //User
     app.get('/user', userController.getCurrent);
     app.head('/user', userController.exists);
-    app.post('/user/login', userController.authenticate);
+    app.post('/user/login', userController.authenticateLocal);
+    app.get('/user/facebook-login', userController.authenticateFacebook);
+    app.get('/user/facebook-callback', userController.authenticateFacebookCallback);
     app.post('/user/register', userController.create);
     app.post('/user/logout', userController.kill);
 
     /* Rather than go right to the API routes below, we need to do a few things first, like say what Users Todos
-       to return and stamp the Todos they create with their ID.  Once we've dne these things (in the "pre" functions),
-       we end up invoking the generic api methods.  Cool, right? */
+     to return and stamp the Todos they create with their ID.  Once we've dne these things (in the "pre" functions),
+     we end up invoking the generic api methods.  Cool, right? */
     app.get('/api/Todo', ensureAuthenticated, todoController.preSearch, apiController.search);
     app.post('/api/Todo', ensureAuthenticated, todoController.preCreate, apiController.create);
     app.post('/api/Todo/:id', ensureAuthenticated, todoController.preUpdate, apiController.update);

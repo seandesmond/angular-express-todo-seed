@@ -2,34 +2,38 @@
 
 var mongoose = require('mongoose'),
     crypto = require('crypto'),
-    uuid = require('node-uuid');
+    uuid = require('node-uuid'),
+    _ = require('lodash');
 
 module.exports = function () {
     var userSchema = new mongoose.Schema({
-        username: { type: String, required: true, unique: true},
-        hashedPassword: {type: String, required: true},
-        salt: {type: String, required: true},
-        apiKey: {type: String, index: true}
+        auth: {
+            username: { type: String, unique: true, index: true},
+            hashedPassword: {type: String},
+            salt: {type: String},
+            apiKey: {type: String, unique: true, index: true}
+        },
+        profile: {type: mongoose.Schema.Types.Mixed}
     });
 
     function encrypt(salt, plainText) {
         return crypto.createHmac('sha1', salt).update(plainText).digest('hex');
     }
 
-    userSchema.virtual('password')
+    userSchema.virtual('auth.password')
         .set(function (password) {
             var user = this;
-            user.pw = password;
-            user.salt = crypto.randomBytes(64).toString('base64');
-            user.hashedPassword = encrypt(user.salt, password);
+            user.auth.pw = password;
+            user.auth.salt = crypto.randomBytes(64).toString('base64');
+            user.auth.hashedPassword = encrypt(user.auth.salt, password);
         })
         .get(function () {
             var user = this;
-            return user.pw;
+            return user.auth.pw;
         });
 
     userSchema.methods.authenticate = function (plainText) {
-        return encrypt(this.salt, plainText) === this.hashedPassword;
+        return encrypt(this.auth.salt, plainText) === this.auth.hashedPassword;
     };
 
     userSchema.methods.getSafeJson = function () {
@@ -38,21 +42,18 @@ module.exports = function () {
         user.id = user._id;
         delete user._id;
         delete user.__v;
-        delete user.salt;
-        delete user.hashedPassword;
+        if (user.auth) {
+            delete user.auth.salt;
+            delete user.auth.hashedPassword;
+        }
 
         return user;
     };
 
     userSchema.pre('save', function (next) {
-        var user = this, pw = user.password || user.hashedPassword;
-        user.apiKey = uuid.v4();
-
-        if (!pw) {
-            next(new Error('Invalid password'));
-        } else {
-            next();
-        }
+        var user = this, apiKey = {apiKey: uuid.v4()};
+        user.auth = user.auth ? _.extend(user.auth, apiKey) : apiKey;
+        next();
     });
 
     return mongoose.model('User', userSchema);

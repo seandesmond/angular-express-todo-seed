@@ -33,6 +33,73 @@ td {
     height: 47px;
 }
 
+.social {
+    margin: 0 auto 28px;
+    float: none;
+    text-align: center;
+}
+
+.social a.circle {
+    text-align: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 100%;
+    margin-right: 25px;
+    display: inline-block;
+    -webkit-transition: border-color ease-in .1s;
+    -moz-transition: border-color ease-in .1s;
+    -o-transition: border-color ease-in .1s;
+    transition: border-color ease-in .1s;
+}
+
+.social a.circle:hover {
+    border-color: white;
+}
+
+.social a.facebook {
+    border: 2px solid #233678;
+    background: #233678;
+}
+
+.social a.twitter {
+    border: 2px solid #54AEE1;
+    background: #54AEE1;
+}
+
+.social a.circle img {
+    display: inline-block;
+    margin-top: 13px;
+}
+
+.social a.gplus {
+    border: 2px solid #292929;
+    background: #292929;
+    margin: 0;
+}
+
+.division {
+    margin: 0 auto 28px;
+    float: none;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+
+.division .line {
+    border-top: 1px solid #68a7c4;
+    width: 34%;
+    top: 10px;
+    position: absolute;
+}
+
+.division .l {
+    left: 0;
+}
+
+.division .r {
+    right: 0;
+}
+
 /* ----- Input Icon ----- */
 
 .input-icon {
