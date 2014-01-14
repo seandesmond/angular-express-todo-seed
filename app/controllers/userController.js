@@ -55,6 +55,48 @@ module.exports = function (app, User, passportMiddleware) {
                 })(req, res, next);
             }],
 
+        authenticateTwitter: [
+            function (req, res, next) {
+                passportMiddleware.authenticate('twitter')(req, res, next);
+            }],
+
+        authenticateTwitterCallback: [
+            function (req, res, next) {
+                passportMiddleware.authenticate('twitter', function (err, user) {
+                    if (err) { return next(err); }
+                    if (!user) { return res.redirect('/login'); }
+
+                    return req.logIn(user, function (err) {
+                        if (err) {
+                            next(err);
+                        } else {
+                            res.redirect('/todos');
+                        }
+                    });
+                })(req, res, next);
+            }],
+
+        authenticateGoogle: [
+            function (req, res, next) {
+                passportMiddleware.authenticate('google')(req, res, next);
+            }],
+
+        authenticateGoogleCallback: [
+            function (req, res, next) {
+                passportMiddleware.authenticate('google', function (err, user) {
+                    if (err) { return next(err); }
+                    if (!user) { return res.redirect('/login'); }
+
+                    return req.logIn(user, function (err) {
+                        if (err) {
+                            next(err);
+                        } else {
+                            res.redirect('/todos');
+                        }
+                    });
+                })(req, res, next);
+            }],
+
         create: [
             function (req, res, next) {
                 var user = new User(req.body);

@@ -16,6 +16,8 @@
         "passport": "latest",
         "passport-local": "latest",
         "passport-facebook": "latest",
+        "passport-twitter": "latest",
+        "passport-google": "latest",
         "winston": "latest",
         "ejs": "latest",
         "node-uuid": "~1.4.1",

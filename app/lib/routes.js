@@ -46,6 +46,10 @@ module.exports = function (app, middleware, passportMiddleware, apiController, h
     app.post('/user/login', userController.authenticateLocal);
     app.get('/user/facebook-login', userController.authenticateFacebook);
     app.get('/user/facebook-callback', userController.authenticateFacebookCallback);
+    app.get('/user/twitter-login', userController.authenticateTwitter);
+    app.get('/user/twitter-callback', userController.authenticateTwitterCallback);
+    app.get('/user/google-login', userController.authenticateGoogle);
+    app.get('/user/google-callback', userController.authenticateGoogleCallback);
     app.post('/user/register', userController.create);
     app.post('/user/logout', userController.kill);
 

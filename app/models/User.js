@@ -8,13 +8,15 @@ var mongoose = require('mongoose'),
 module.exports = function () {
     var userSchema = new mongoose.Schema({
         auth: {
-            username: { type: String, unique: true, index: true},
+            username: {type: String, index: {unique: true, sparse: true}},
             hashedPassword: {type: String},
             salt: {type: String},
             apiKey: {type: String, unique: true, index: true}
         },
         profile: {type: mongoose.Schema.Types.Mixed}
     });
+
+    userSchema.index({ 'profile.id': 1 });
 
     function encrypt(salt, plainText) {
         return crypto.createHmac('sha1', salt).update(plainText).digest('hex');

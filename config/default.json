@@ -13,5 +13,9 @@
         "appId": "FB_APP_ID",
         "appSecret": "FB_APP_SECRET"
     },
+    "twitter": {
+        "consumerKey": "TWITTER_CONSUMER_KEY",
+        "consumerSecret": "TWITTER_CONSUMER_SECRET"
+    },
     "character_encoding": "utf-8"
 }
